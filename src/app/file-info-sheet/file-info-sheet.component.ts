@@ -164,6 +164,38 @@ export class FileInfoSheetComponent {
     }
   }
 
+  vrUrl$ = this.file$.pipe(
+    filter(file => this.checkIfVr(file)),
+    map(file => `${this.buildVrUrl(file)}`)
+  )
+
+  checkIfVr(file) {
+    const allTagsServiceKey = file.displayTags[0].serviceKey
+
+    const fileTags = file.tags[allTagsServiceKey]['display_tags'][0]
+    const output = fileTags.filter(tag => tag.indexOf('medium:vr') > -1)
+
+    return output
+  }
+
+  buildVrUrl(file) {
+    let url = new URL("https://awaw3d.github.io/view/")
+    let params = new URLSearchParams(url.search)
+
+    params.set('urls', file.file_url)
+    params.set('dims', `${file.width}x${file.height}`)
+
+    const stereoTag = file.tags[file.displayTags[0].serviceKey]['display_tags'][0].filter(tag => tag.indexOf('stereo:') > -1)
+
+    let stereo = 'none'
+    if (stereoTag.length > 0) stereo = stereoTag[0].split(':')[1]
+
+    params.set('stereo', stereo)
+
+    url.search = params.toString()
+    return url.href
+  }
+
   saveFile() {
     this.downloadService.saveFile(this.data.file);
   }

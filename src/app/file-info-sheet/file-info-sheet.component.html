@@ -7,6 +7,9 @@
     <button mat-icon-button (click)="saveFile()" aria-label="Download file" matTooltip="Download file">
       <mat-icon>get_app</mat-icon>
     </button>
+    <a mat-icon-button *ngIf="vrUrl$ | async as vrUrl" href="{{ vrUrl }}" target="_blank" aria-label="Open in VR" matTooltip="Open in VR">
+      <mat-icon>panorama_photosphere</mat-icon>
+    </a>
     <button mat-icon-button *ngIf="downloadService.canShare" (click)="shareFile()" aria-label="Share file" matTooltip="Share file">
       <mat-icon>share</mat-icon>
     </button>
