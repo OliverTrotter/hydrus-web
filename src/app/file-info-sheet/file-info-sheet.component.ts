@@ -175,7 +175,7 @@ export class FileInfoSheetComponent {
     const fileTags = file.tags[allTagsServiceKey]['display_tags'][0]
     const output = fileTags.filter(tag => tag.indexOf('medium:vr') > -1)
 
-    return output
+    return output.length > 0 ? output : false
   }
 
   buildVrUrl(file) {
